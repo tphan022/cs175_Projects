@@ -2,14 +2,14 @@
 #include <queue>
 #include <list>
 #include <iterator>
+#include <cstdlib>
 //#include <algorithm>
 
 
 
 struct eight_node {
     int board[3][3];
-    //int cost;
-    //int depth;
+    int MS; // Variable for Misplaced tile
     int solution[3][3];
     bool valid;
     
@@ -22,7 +22,19 @@ struct eight_node {
             }
         }
         solution[2][2] = 0;
+        
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(board[i][j] != solution[i][j]) {
+                    if(board[i][j] != 0) {
+                        MS++;
+                    }
+                }
+            }
+        }
     }
+    
+    // Swap function for left side.
     eight_node* generate_left() {
         eight_node *gen = new eight_node; // generates a new node
         int row = -1;
@@ -58,6 +70,7 @@ struct eight_node {
         
     }
     
+    // Swap function for right side.
     eight_node* generate_right() {
         eight_node *gen = new eight_node; // generates a new node
         int row = -1;
@@ -93,6 +106,7 @@ struct eight_node {
         
     }
     
+    // Swap function for bottom side.
     eight_node* generate_down() {
         eight_node *gen = new eight_node; // generates a new node
         int row = -1;
@@ -128,6 +142,7 @@ struct eight_node {
         
     }
     
+    // Swap function for top side.
     eight_node* generate_up() {
         eight_node *gen = new eight_node; // generates a new node
         int row = -1;
@@ -163,6 +178,8 @@ struct eight_node {
         
     }
     
+    
+    // Compares and returns boolean if the current pattern is the solution.
     bool check_solution() {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
@@ -172,6 +189,10 @@ struct eight_node {
             }
         }
         return true;
+    }
+    
+    bool operator<(const eight_node& right) const {
+        return MS > right.MS;
     }
     
 };
@@ -196,10 +217,10 @@ bool checklist(std::list<eight_node> ls, eight_node chk) {
     return false;
 }
 
-
-void UCS(eight_node root) { // Uniform Cost Search
-    std::queue<eight_node> QF;
-    std::list<eight_node> LS;
+// Uniform Cost Search
+void UCS(eight_node root) { 
+    std::queue<eight_node> QF; // QF is the queue
+    std::list<eight_node> LS; // LS is the list to keep track of visited nodes.
     unsigned int counter = 0;
     eight_node *temp = new eight_node;
     bool done = false;
@@ -265,10 +286,78 @@ void UCS(eight_node root) { // Uniform Cost Search
     
 }
 
+void Mispaced(eight_node root) { 
+    std::priority_queue<eight_node> QF; // QF is the queue
+    std::list<eight_node> LS; // LS is the list to keep track of visited nodes.
+    unsigned int counter = 0;
+    eight_node *temp = new eight_node;
+    bool done = false;
+    eight_node curr;
+    QF.push(root);
+    LS.push_back(curr);
+    
+    while(!QF.empty()) {
+        counter++;
+        curr = QF.top();
+        QF.pop();
+        
+        //std::cout << "\n";
+        // for(int i = 0; i < 3; i++) {
+        //     for(int j = 0; j < 3; j++) {
+        //         std::cout << curr.board[i][j] << " ";
+        //     }
+        //     std::cout << "\n";
+        // }
+        
+        
+        if(curr.check_solution()) {
+            std::cout << "\n" << "Solution has been reached.\n";
+            std::cout << "this took " << counter << " steps.\n";
+            done = true;
+            break;
+        }
+        
+        temp = curr.generate_left();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        temp = curr.generate_down();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        temp = curr.generate_right();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        temp = curr.generate_up();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        
+    }
+    if(!done) {
+        std::cout << "\n" << "Error, no solution.\n";
+    }
+    
+    
+}
+
 int main() {
     eight_node B;
-    eight_node *C;
-    int arr[9] = {1,8,2,0,4,3,7,6,5};
+    int select = 0;
+    int arr[9] = {1,2,3,4,0,6,7,5,8};
     int k = 0;
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
@@ -276,21 +365,22 @@ int main() {
             k++;
         }
     }
-    for(int i = 0; i < 3; i++) {
-        for(int j = 0; j < 3; j++) {
-            std::cout << B.board[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "\n" << B.check_solution() << "\n";
-    // C = B.generate_up();
     // for(int i = 0; i < 3; i++) {
     //     for(int j = 0; j < 3; j++) {
-    //         std::cout << C->board[i][j] << " ";
+    //         std::cout << B.board[i][j] << " ";
     //     }
     //     std::cout << "\n";
     // }
-    UCS(B);
+    
+    std::cout << "Select an algorithm.\n1: Uniform Cost\n2: Mispaced Tile\n";
+    std::cin >> select;
+    
+    if(select == 1) {
+        UCS(B);
+    }
+    else if(select == 2) {
+        Mispaced(B);
+    }
     
     return 0;
 }
