@@ -10,11 +10,13 @@
 struct eight_node {
     int board[3][3];
     int MS; // Variable for Misplaced tile
+    int moves;
     int solution[3][3];
     bool valid;
     
     eight_node(){
         int k = 1;
+        moves = 0;
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 solution[i][j] = k;
@@ -23,6 +25,7 @@ struct eight_node {
         }
         solution[2][2] = 0;
         
+        // Misplaced Tile
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 if(board[i][j] != solution[i][j]) {
@@ -66,6 +69,8 @@ struct eight_node {
         else {
             gen->valid = false;
         }
+        gen->moves = (this->moves) + 1;
+        gen->MS = gen->MS + gen->moves;
         return gen;
         
     }
@@ -102,6 +107,8 @@ struct eight_node {
         else {
             gen->valid = false;
         }
+        gen->moves = (this->moves) + 1;
+        gen->MS = gen->MS + gen->moves;
         return gen;
         
     }
@@ -138,6 +145,8 @@ struct eight_node {
         else {
             gen->valid = false;
         }
+        gen->moves = (this->moves) + 1;
+        gen->MS = gen->MS + gen->moves;
         return gen;
         
     }
@@ -174,6 +183,8 @@ struct eight_node {
         else {
             gen->valid = false;
         }
+        gen->moves = (this->moves) + 1;
+        gen->MS = gen->MS + gen->moves;
         return gen;
         
     }
@@ -357,7 +368,7 @@ void Mispaced(eight_node root) {
 int main() {
     eight_node B;
     int select = 0;
-    int arr[9] = {1,2,3,4,0,6,7,5,8};
+    int arr[9] = {1,8,2,0,4,3,7,6,5};
     int k = 0;
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
