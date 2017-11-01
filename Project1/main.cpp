@@ -3,8 +3,6 @@
 #include <list>
 #include <iterator>
 #include <cstdlib>
-//#include <algorithm>
-
 
 
 struct eight_node {
@@ -475,7 +473,15 @@ void Manhattan(eight_node root) {
 int main() {
     eight_node B;
     int select = 0;
-    int arr[9] = {1,8,2,0,4,3,7,6,5};
+    int arr[9];
+    
+    std::cout << "Please denote the blankspace with a 0\n";
+    std::cout << "Enter top three numbers seperated by whitespace:    ";
+    std::cin >> arr[0] >> arr[1] >> arr[2];
+    std::cout << "Enter middle three numbers seperated by whitespace: ";
+    std::cin >> arr[3] >> arr[4] >> arr[5];
+    std::cout << "Enter bottom three numbers seperated by whitespace: ";
+    std::cin >> arr[6] >> arr[7] >> arr[8];
     int k = 0;
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
@@ -484,7 +490,7 @@ int main() {
         }
     }
     
-    std::cout << "Select an algorithm.\n1: Uniform Cost\n2: Mispaced Tile\n";
+    std::cout << "Select an algorithm.\n1: Uniform Cost (with trace)\n2: Mispaced Tile\n";
     std::cout << "3: Manhattan Search\n";
     std::cin >> select;
     
