@@ -12,17 +12,8 @@ struct eight_node {
     //int depth;
     int solution[3][3];
     bool valid;
-    eight_node *left;
-    eight_node *up;
-    eight_node *right;
-    eight_node *down;
-    //eight_node *parent;
     
     eight_node(){
-        left = NULL;
-        up = NULL;
-        right = NULL;
-        down = NULL;
         int k = 1;
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
@@ -209,33 +200,75 @@ bool checklist(std::list<eight_node> ls, eight_node chk) {
 void UCS(eight_node root) { // Uniform Cost Search
     std::queue<eight_node> QF;
     std::list<eight_node> LS;
+    unsigned int counter = 0;
+    eight_node *temp = new eight_node;
+    bool done = false;
     eight_node curr;
     QF.push(root);
-    // int g = 0;
-    // int arr2[9] = {1,2,3,4,0,6,7,5,8};
-    // eight_node test;
-    // for(int i = 0; i < 3; i++) {
-    //     for(int j = 0; j < 3; j++) {
-    //         test.board[i][j] = arr2[g];
-    //         g++;
-    //     }
-    // }
+    LS.push_back(curr);
+    
     while(!QF.empty()) {
+        counter++;
         curr = QF.front();
         QF.pop();
+        
+        std::cout << "\n";
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                std::cout << curr.board[i][j] << " ";
+            }
+            std::cout << "\n";
+        }
+        
+        
+        if(curr.check_solution()) {
+            std::cout << "\n" << "Solution has been reached.\n";
+            std::cout << "this took " << counter << " steps.\n";
+            done = true;
+            break;
+        }
+        
+        temp = curr.generate_left();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        temp = curr.generate_down();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        temp = curr.generate_right();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        temp = curr.generate_up();
+        if(temp->valid) {
+            if(!checklist(LS, *temp)) {
+                LS.push_back(*temp);
+                QF.push(*temp);
+            }
+        }
+        
     }
-    curr = QF.front();
-    // LS.push_back(test);
-    // checklist(LS, curr);
+    if(!done) {
+        std::cout << "\n" << "Error, no solution.\n";
+    }
     
-    //std::cout << checklist(LS, curr) << std::endl;
     
 }
 
 int main() {
     eight_node B;
     eight_node *C;
-    int arr[9] = {1,2,3,4,0,6,7,5,8};
+    int arr[9] = {1,8,2,0,4,3,7,6,5};
     int k = 0;
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
@@ -257,7 +290,7 @@ int main() {
     //     }
     //     std::cout << "\n";
     // }
-    //UCS(B);
+    UCS(B);
     
     return 0;
 }
