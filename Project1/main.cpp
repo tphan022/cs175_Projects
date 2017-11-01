@@ -1,11 +1,10 @@
 #include <iostream>
 #include <queue>
+#include <list>
+#include <iterator>
 //#include <algorithm>
 
-template <class T> void swap ( T& a, T& b )
-{
-  T c(a); a=b; b=c;
-}
+
 
 struct eight_node {
     int board[3][3];
@@ -41,12 +40,46 @@ struct eight_node {
     
 };
 
+// Function to test if a node has already been searched
+bool checklist(std::list<eight_node> ls, eight_node chk) {
+    std::list<eight_node>::iterator it;
+    int num = 0;
+    for(it = ls.begin(); it != ls.end(); ++it) {
+        num = 0;
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(it->board[i][j] == chk.board[i][j]) {
+                    num++;
+                }
+            }
+        }
+        if(num == 9) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 void UCS(eight_node root) { // Uniform Cost Search
     std::queue<eight_node> QF;
+    std::list<eight_node> LS;
+    // int g = 0;
+    // int arr2[9] = {1,2,3,4,0,6,7,5,8};
+    // eight_node test;
+    // for(int i = 0; i < 3; i++) {
+    //     for(int j = 0; j < 3; j++) {
+    //         test.board[i][j] = arr2[g];
+    //         g++;
+    //     }
+    // }
     eight_node curr;
     QF.push(root);
     curr = QF.front();
-    std::cout << curr.board[0][0] << std::endl;
+    // LS.push_back(test);
+    // checklist(LS, curr);
+    
+    //std::cout << checklist(LS, curr) << std::endl;
     
 }
 
