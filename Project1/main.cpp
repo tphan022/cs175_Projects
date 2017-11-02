@@ -413,13 +413,13 @@ void Manhattan(eight_node root) {
         curr = QF.top();
         QF.pop();
         
-        //std::cout << "\n";
-        // for(int i = 0; i < 3; i++) {
-        //     for(int j = 0; j < 3; j++) {
-        //         std::cout << curr.board[i][j] << " ";
-        //     }
-        //     std::cout << "\n";
-        // }
+        std::cout << "\n";
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                std::cout << curr.board[i][j] << " ";
+            }
+            std::cout << "\n";
+        }
         
         
         if(curr.check_solution()) {
@@ -476,11 +476,11 @@ int main() {
     int arr[9];
     
     std::cout << "Please denote the blankspace with a 0\n";
-    std::cout << "Enter top three numbers seperated by whitespace:    ";
+    std::cout << "Enter top three numbers separated by whitespace:    ";
     std::cin >> arr[0] >> arr[1] >> arr[2];
-    std::cout << "Enter middle three numbers seperated by whitespace: ";
+    std::cout << "Enter middle three numbers separated by whitespace: ";
     std::cin >> arr[3] >> arr[4] >> arr[5];
-    std::cout << "Enter bottom three numbers seperated by whitespace: ";
+    std::cout << "Enter bottom three numbers separated by whitespace: ";
     std::cin >> arr[6] >> arr[7] >> arr[8];
     int k = 0;
     for(int i = 0; i < 3; i++) {
@@ -490,7 +490,7 @@ int main() {
         }
     }
     
-    std::cout << "Select an algorithm.\n1: Uniform Cost (with trace)\n2: Mispaced Tile\n";
+    std::cout << "Select an algorithm.\n1: Uniform Cost (with trace)\n2: Misplaced Tile\n";
     std::cout << "3: Manhattan Search\n";
     std::cin >> select;
     
